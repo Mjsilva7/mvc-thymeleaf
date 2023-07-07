@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kamauro.mvcudemy.dao.CargoDao;
 import com.kamauro.mvcudemy.model.Cargo;
 
+
 @Service
+@Transactional(readOnly = false)
 public class CargoServiceImpl implements CargoService {
 
     @Autowired
@@ -30,11 +33,13 @@ public class CargoServiceImpl implements CargoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Cargo buscarPorId(Long id) {
         return dao.findById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Cargo> buscarTodos() {
         return dao.findAll();
     }
