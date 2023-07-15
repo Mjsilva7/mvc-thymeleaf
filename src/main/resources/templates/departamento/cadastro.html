@@ -17,6 +17,7 @@
 		</div>
 
 		<div class="container" id="cadastro">
+			<div th:replace="~{fragments/alert}"></div>
 			<form class="row g-3" th:action="${departamento.id == null} ? @{/departamentos/salvar} : @{/departamentos/editar}" th:object="${departamento}" method="POST">
 				<div class="col-11">
 				  <input type="text" class="form-control" id="nome" placeholder="Novo departamento" th:field="*{nome}">

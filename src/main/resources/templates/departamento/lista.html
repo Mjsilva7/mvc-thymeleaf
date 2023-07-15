@@ -4,6 +4,7 @@
 <body>
 	<section class="layout-content" layout:fragment="conteudo">
 		<div class="container" id="listagem">
+			<div th:replace="~{fragments/alert}"></div>
 			<div class="table-responsive">
 				<div class="p-2 mb-2 bg-body-tertiary rounded-3">
 					<div class="container-fluid">
@@ -39,9 +40,7 @@
 				</table>
 			</div>
 		</div>
-
 		<div th:replace="~{fragments/modal :: modal}"></div>
-
 	</section>
 </body>
 </html>		

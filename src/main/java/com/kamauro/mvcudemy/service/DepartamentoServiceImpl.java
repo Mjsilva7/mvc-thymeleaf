@@ -10,23 +10,25 @@ import com.kamauro.mvcudemy.dao.DepartamentoDao;
 import com.kamauro.mvcudemy.model.Departamento;
 
 @Service
-@Transactional(readOnly = false)
 public class DepartamentoServiceImpl implements DepartamentoService{
 
     @Autowired
     private DepartamentoDao dao;
 
     @Override
+    @Transactional(readOnly = false)
     public void salvar(Departamento departamento) {
         dao.save(departamento);
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void editar(Departamento departamento) {
         dao.update(departamento);
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void excluir(Long id) {
         dao.delete(id);
     }
