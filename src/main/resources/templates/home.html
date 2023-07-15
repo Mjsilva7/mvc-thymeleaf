@@ -1,4 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
+<html layout:decorate="~{layout}">
+<head><meta charset="utf-8"></head>
+<body>    
+	<section layout:fragment="conteudo">
+		<div class="container py-4">
+			<div class="p-5 mb-4 bg-body-tertiary rounded-3">
+				<div class="container-fluid py-5">
+					<h1 class="display-5 fw-bold">Tecnologia utilizadas no projeto</h1>
+
+					<div class="row w-100">
+						<div class="col-3 pr-5">
+							<div class="nav flex-column nav-tabs align-items-center" id="exTab2"  aria-orientation="vertical">
+								<a class="nav-link active" data-bs-toggle="tab" href="#bootstrap">Bootstrap 5</a>							
+								<a class="nav-link" data-bs-toggle="tab" href="#spring-boot">Spring-Boot</a>
+								<a class="nav-link" data-bs-toggle="tab" href="#sts">Spring Tool Suite</a>							
+								<a class="nav-link" data-bs-toggle="tab" href="#thymeleaf">Thymeleaf</a>							
+							</div>
+						</div>					  
+						<div class="col-9">
+						  <div class="tab-content">
+							<div class="tab-pane active" id="bootstrap">
+								<a href="https://getbootstrap.com/">Bootstrap</a> is an open
+								source toolkit for developing with HTML, CSS, and JS. Quickly
+								prototype your ideas or build your entire app with our Sass
+								variables and mixins, responsive grid system, extensive prebuilt
+								components, and powerful plugins built on jQuery.
+							</div>
+
+							<div class="tab-pane" id="spring-boot">
+								<a href="https://projects.spring.io/spring-boot/">Spring Boot</a>
+								makes it easy to create stand-alone, production-grade Spring
+								based Applications that you can "just run". We take an
+								opinionated view of the Spring platform and third-party libraries
+								so you can get started with minimum fuss. Most Spring Boot
+								applications need very little Spring configuration.
+							</div>
+
+							<div class="tab-pane" id="sts">
+								The <a href="https://spring.io/tools">Spring Tool Suite</a> is an
+								Eclipse-based development environment that is customized for
+								developing Spring applications. It provides a ready-to-use
+								environment to implement, debug, run, and deploy your Spring
+								applications, including integrations for Pivotal tc Server,
+								Pivotal Cloud Foundry, Git, Maven, AspectJ, and more.
+							</div>
+
+							<div class="tab-pane text-justify" id="thymeleaf">
+								<a href="http://www.thymeleaf.org/">Thymeleaf</a> is a modern
+								server-side Java template engine for both web and standalone
+								environments. With modules for Spring Framework, a host of
+								integrations with your favourite tools, and the ability to plug
+								in your own functionality, Thymeleaf is ideal for modern-day
+								HTML5 JVM web development - although there is much more it can
+								do.
+							</div>
+						  </div>
+						</div>
+					  </div>					
+				</div> 
+			</div>
+		</div>
+	</section>	
+</body>
+</html>
+
+
+
+
+
+<!-- <!DOCTYPE html>
 <html layout:decorate="~{layout}">
 <head><meta charset="UTF-8" /></head>
 <body>	
@@ -19,21 +89,21 @@
 				<div class="col-4">
 					<div class="list-group" id="list-tab" role="tablist">
 						<a class="list-group-item list-group-item-action active"
-							id="list-spring-boot-list" data-toggle="list" href="#spring-boot"
+							id="list-spring-boot-list" data-bs-toggle="list" href="#spring-boot"
 							role="tab" aria-controls="spring-boot">Spring-Boot</a> <a
 							class="list-group-item list-group-item-action" id="list-sts-list"
-							data-toggle="list" href="#sts" role="tab" aria-controls="sts">Spring
+							data-bs-toggle="list" href="#sts" role="tab" aria-controls="sts">Spring
 							Tool Suite</a> <a class="list-group-item list-group-item-action"
-							id="list-thymeleaf-list" data-toggle="list" href="#thymeleaf"
+							id="list-thymeleaf-list" data-bs-toggle="list" href="#thymeleaf"
 							role="tab" aria-controls="thymeleaf">Thymeleaf</a> <a
 							class="list-group-item list-group-item-action"
-							id="list-webjars-list" data-toggle="list" href="#webjars"
+							id="list-webjars-list" data-bs-toggle="list" href="#webjars"
 							role="tab" aria-controls="webjars">WebJars</a> <a
 							class="list-group-item list-group-item-action"
-							id="list-hibernate-list" data-toggle="list" href="#hibernate"
+							id="list-hibernate-list" data-bs-toggle="list" href="#hibernate"
 							role="tab" aria-controls="hibernate">Hibernate</a> <a
 							class="list-group-item list-group-item-action"
-							id="list-bootstrap-list" data-toggle="list" href="#bootstrap"
+							id="list-bootstrap-list" data-bs-toggle="list" href="#bootstrap"
 							role="tab" aria-controls="bootstrap">Bootstrap 4</a>
 					</div>
 				</div>
@@ -100,4 +170,4 @@
 		</div>		
 	</section>		
 </body>
-</html>
+</html> -->
