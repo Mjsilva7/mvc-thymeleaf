@@ -2,62 +2,74 @@ package com.kamauro.mvcudemy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kamauro.mvcudemy.model.Departamento;
 import com.kamauro.mvcudemy.service.DepartamentoService;
 
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping("/departamentos")
 public class DepartamentoController {
 
     @Autowired
-    private DepartamentoService service;
-
-    @GetMapping("/cadastrar")
-    public String cadastrar(Departamento departamento) {
-        return "/departamento/cadastro";
-    }
+    private DepartamentoService serviceDepartamento;
 
     @GetMapping("/listar")
-    public String listar(ModelMap model) {
-        model.addAttribute("departamentos", service.buscarTodos());
+    public String listar(Model model) {
+        model.addAttribute("departamentos", serviceDepartamento.listarTodos());
         return "/departamento/lista";
     }
 
-    @PostMapping("/salvar")
-    public String salvar(Departamento departamento, RedirectAttributes attr) {
-        service.salvar(departamento);
-        attr.addFlashAttribute("success", "Departamento inserido com sucesso.");
-        return "redirect:/departamentos/cadastrar";
-    }
+    @GetMapping("/cadastrar")
+    public String telaCadastrarDepartamento(Model model) {
+        model.addAttribute("departamento", new Departamento());
+        model.addAttribute("edicao", false);
+        return "/departamento/cadastro";
+    }    
 
     @GetMapping("editar/{id}")
-    public String abrir(@PathVariable("id") Long id, ModelMap model) {
-        model.addAttribute("departamento", service.buscarPorId(id));
+    public String telaEditarDepartamento(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("departamento", serviceDepartamento.buscaPorId(id));
+        model.addAttribute("edicao", true);
         return "/departamento/cadastro";
     }
 
-    @PostMapping("/editar")
-    public String editar(Departamento departamento, RedirectAttributes attr) {
-        service.editar(departamento);
-        attr.addFlashAttribute("success", "Departamento editado com sucesso.");
+    @RequestMapping(value = "/cadastrarDepartamento", params = { "cadastrar" })
+    public String cadastrarDepartamento(@Valid Departamento departamento, BindingResult result, RedirectAttributes attr) {
+        if(result.hasErrors()) {
+            return "/departamento/cadastro";
+        }
+        
+        serviceDepartamento.cadastrar(departamento);
+        attr.addFlashAttribute("success", "Registro inserido com sucesso.");
+        return "redirect:/departamentos/cadastrar";
+    }
+
+    @RequestMapping(value = "/cadastrarDepartamento", params = { "atualizar" })
+    public String editar(@Valid Departamento departamento, BindingResult result, RedirectAttributes attr) {
+        if(result.hasErrors()) {
+            return "/departamento/cadastro";
+        }
+        serviceDepartamento.alterar(departamento.getId(), departamento);
+        attr.addFlashAttribute("success", "Registro atualizado com sucesso.");
         return "redirect:/departamentos/cadastrar";
     }
 
     @GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, ModelMap model) {
+	public String excluir(@PathVariable("id") Long id, Model model) {
 		
-		if (service.departamentoTemCargos(id)) {
-			model.addAttribute("fail", "Departamento não removido. Possui cargo(s) vinculado(s).");
+		if (serviceDepartamento.departamentoTemCargos(id)) {
+			model.addAttribute("fail", "Registro não removido. Possui cargo(s) vinculado(s).");
 		} else {
-			service.excluir(id);
-			model.addAttribute("success", "Departamento excluído com sucesso.");
+			serviceDepartamento.deletar(id);
+			model.addAttribute("success", "Registro excluído com sucesso.");
 		}
 		
 		return listar(model);

@@ -3,103 +3,15 @@
 <head><meta charset="UTF-8"/></head>
 <body>
 	<section class="layout-content" layout:fragment="conteudo">
-		<!-- <nav class="navbar navbar-expand-md bg-light">
-			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-						<i class="oi oi-caret-right"></i>
-						<span>Lista de Funcionários</span>
-					</li>
-				</ul>
-				<a class="btn btn-primary btn-md" href="/funcionarios/cadastrar" role="button">
-					<span class="oi oi-plus" title="Cadastro" aria-hidden="true"></span>
-					<span>Cadastrar Funcionários</span>
-				</a>
-			</div>
-		</nav> -->
-
 		<div class="container" id="listagem">
-
-			<!-- <p>
-				<i class="oi oi-magnifying-glass"></i><span></span>
-				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseNome"
-						aria-controls="collapseNome">Nome
-				</button>
-				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseCargo"
-						aria-controls="collapseCargo">Cargo
-				</button>
-				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseData"
-						aria-controls="collapseData">Datas
-				</button>
-			</p> -->
-			<!-- <div class="row">
-				<div class="col">
-					<div class="collapse" id="collapseNome">
-
-						<nav class="navbar navbar-light bg-light">
-							<form class="form-inline" method="GET" action="/funcionarios/buscar/nome">
-								<input class="form-control mr-sm-2" type="search" placeholder="nome" aria-label="Search"
-										name="nome" />
-								<button class="btn btn-outline-success my-2 my-sm-0">Search</button>
-							</form>
-						</nav>
-
-					</div>
-				</div>
-			</div> -->
-			<!-- <div class="row">
-				<div class="col">
-					<div class="collapse" id="collapseCargo">
-
-						<nav class="navbar navbar-light bg-light">
-							<form class="form-inline" method="GET" action="/funcionarios/buscar/cargo">
-								<select class="form-control mr-sm-2" name="cargo" aria-label="Search">
-									<option value="">Cargo</option>
-									<option value="1">Auxiliar Contábil</option>
-									<option value="2">Auxiliar Administrativo</option>
-									<option value="3">Contador</option>
-									<option value="4">Adminitrador</option>
-									<option value="5">Programado PHP</option>
-									<option value="6">Desenvolvedor Java Jr.</option>
-									<option value="7">Desenvolvedor Java Pleno</option>
-									<option value="8">Desenvolvedor Java Senior</option>
-									<option value="9">Auxiliar de RH</option>
-									<option value="10">Coordenador de RH</option>
-									<option value="11">Psicologo</option>
-								</select>
-								<button class="btn btn-outline-success my-2 my-sm-0">Search</button>
-							</form>
-						</nav>
-
-					</div>
-				</div>
-			</div> -->
-			<!-- <div class="row">
-				<div class="col">
-					<div class="collapse" id="collapseData">
-
-						<nav class="navbar navbar-light bg-light">
-							<form class="form-inline" method="GET" action="/funcionarios/buscar/data">
-								<input class="form-control mr-sm-2" type="date" aria-label="Search"
-										name="entrada" />
-								<input class="form-control mr-sm-2" type="date" aria-label="Search"
-										name="saida" />
-								<button class="btn btn-outline-success my-2 my-sm-0">Search</button>
-							</form>
-						</nav>
-
-					</div>
-				</div>
-			</div> -->
-
-
+			<div th:replace="~{fragments/alert}"></div>
 			<div class="table-responsive">
 				<div class="p-2 mb-2 bg-body-tertiary rounded-3">
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-12 text-center">
 								<h5 class="display-7 fw-bold">Lista de Funcionários</h5>									
-								<a class="btn btn-secondary btn-md" href="/funcionarios/cadastrar"><i class="bi bi-plus-lg">&nbsp;Cadastrar</i></a>
+								<a class="btn btn-secondary btn-md" th:href="@{/funcionarios/cadastrar}"><i class="bi bi-plus-lg">&nbsp;Cadastrar</i></a>
 							</div>
 						</div>
 					</div>						
@@ -110,8 +22,8 @@
 						<th>#</th>
 						<th>Nome</th>
 						<th>Salário</th>
-						<th>Departamento</th>
 						<th>Cargo</th>
+						<th>Departamento</th>
 						<th>Endereço</th>
 						<th>Data de Entrada</th>
 						<th>Data de Saída</th>
@@ -119,34 +31,44 @@
 					</tr>
 					</thead>
 					<tbody>
-					<tr>
-						<td>1</td>
-						<td>Jorge da Silva</td>
-						<td>R$ 3.500,99</td>
-						<td>Recursos Humanos</td>
-						<td>Auxiliar de RH</td>
+					<tr th:each="f : ${funcionarios}">
+						<td th:text="${f.id}">1</td>
+						<td th:text="${f.nome}">Jorge da Silva</td>
+						<td th:text="|R$ ${{f.salario}}|">R$ 3.500,99</td>
+						<td th:text="${f.cargo.nome}">Recursos Humanos</td>
+						<td th:text="${f.cargo.departamento.nome}">Auxiliar de RH</td>
 						<td>
-							<button type="button" class="btn btn-secondary btn-sm" data-container="body"
-									data-toggle="popover" data-placement="top"
-									data-content="Rua das Oliveiras, 260 Fundos - Centro, Porto Alegre - RS - 97050-015">
-									<i class="bi bi-eye"></i>
-								<!-- <span class="oi oi-eye" title="Visualizar" aria-hidden="true"></span> -->
+							<button type="button" class="btn btn-secondary btn-sm" 
+									data-bs-container="body"
+									data-bs-toggle="popover" 
+									data-bs-placement="top"
+									th:attr="data-bs-content=${#strings.concat(
+										f.endereco.logradouro, ', ',
+										f.endereco.numero, ' ', 
+										f.endereco.complemento, ' - ', 
+										f.endereco.bairro, ',  ', 
+										f.endereco.cidade, ' - ', 
+										f.endereco.uf.sigla, ' - ', 
+										f.endereco.cep 
+									)}">
+									<i class="bi bi-eye" aria-hidden="true"></i>
 							</button>
 						</td>
-						<td>01/10/2014</td>
-						<td></td>
+						<td th:text="${#temporals.format(f.dataEntrada, 'dd/MM/yyyy')}">01/10/2014</td>
+						<td th:text="${#temporals.format(f.dataSaida, 'dd/MM/yyyy')}"></td>
 						<td colspan="2">
-							<a class="btn btn-info btn-sm" href="/funcionarios/editar/1" role="button">
+							<a class="btn btn-info btn-sm" th:href="@{/funcionarios/editar/{id} (id=${f.id})}" role="button">
 								<i class="bi bi-pencil-square"></i>
 							</a>
-							<button id="btn_funcionarios/excluir/1" type="button" class="btn btn-danger btn-sm"
-									data-toggle="modal" data-target="#myModal"><i class="bi bi-trash3"></i></button>
+							<button th:id="${#strings.concat('btn_funcionarios/excluir/', f.id)} " type="button" class="btn btn-danger btn-sm"
+									data-bs-toggle="modal" data-bs-target="#myModal"><i class="bi bi-trash3"></i></button>
 						</td>
 					</tr>					
 					</tbody>
 				</table>
 			</div>
 		</div>
+		<div th:replace="~{fragments/modal :: modal}"></div>
 	</section>
 </body>
 </html>		

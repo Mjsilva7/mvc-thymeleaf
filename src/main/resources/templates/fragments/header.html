@@ -5,9 +5,9 @@
 	<header class="d-flex justify-content-center py-3" th:fragment="cabecalho">
 		<ul class="nav nav-pills">
 			<li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
-			<li class="nav-item"><a href="/cargos/listar" class="nav-link">Cargo</a></li>
-			<li class="nav-item"><a href="/departamentos/listar" class="nav-link">Departamento</a></li>
-			<li class="nav-item"><a href="/funcionarios/listar" class="nav-link">Funcionário</a></li>
+			<li class="nav-item"><a th:href="@{/cargos/listar}" class="nav-link">Cargo</a></li>
+			<li class="nav-item"><a th:href="@{/departamentos/listar}" class="nav-link">Departamento</a></li>
+			<li class="nav-item"><a th:href="@{/funcionarios/listar}" class="nav-link">Funcionário</a></li>
 			</ul>
 	</header>    
 </body>

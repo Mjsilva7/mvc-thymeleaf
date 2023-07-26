@@ -1,19 +1,76 @@
 package com.kamauro.mvcudemy.service;
 
 import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kamauro.mvcudemy.model.Funcionario;
+import com.kamauro.mvcudemy.repository.FuncionarioRepository;
 
-public interface FuncionarioService {
+@Service
+@Transactional(readOnly = false)
+public class FuncionarioService implements GenericInterfaceService<Funcionario, Long>{
 
-    void salvar(Funcionario funcionario);
+    @Autowired
+    private FuncionarioRepository repositorio;
 
-    void editar(Funcionario funcionario);
+    @Override
+    public Funcionario cadastrar(Funcionario funcionario) {
+        return repositorio.saveAndFlush(funcionario);
+    }
 
-    void excluir(Long id);
+    @Override
+    public Funcionario alterar(Long id, Funcionario funcionario) {
+        Funcionario funcionarioBanco = repositorio.getReferenceById(id);
 
-    Funcionario buscarPorId(Long id);
+        if(funcionarioBanco == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
 
-    List<Funcionario> buscarTodos();
+        BeanUtils.copyProperties(funcionario, funcionarioBanco, "id");
+
+        return repositorio.saveAndFlush(funcionarioBanco);
+         
+    }
+
+    @Override
+    public void deletar(Long id) {
+        repositorio.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Funcionario> buscaPorId(Long id) {
+        return (Optional<Funcionario>) repositorio.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Funcionario> listarTodos() {
+        return repositorio.findAll();
+    }
+
+    @Override
+    public Page<Funcionario> buscaPaginada(String pesquisa, Pageable pageable) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscaPaginada'");
+    }
+
+    // void salvar(Funcionario funcionario);
+
+    // void editar(Funcionario funcionario);
+
+    // void excluir(Long id);
+
+    // Funcionario buscarPorId(Long id);
+
+    // List<Funcionario> buscarTodos();
     
 }
