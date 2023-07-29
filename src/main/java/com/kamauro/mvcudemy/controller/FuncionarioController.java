@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -38,13 +39,19 @@ public class FuncionarioController {
     }
 
     @GetMapping("/cadastrar")
-    public String telaCadastrarFuncionario(Model model) {
-        model.addAttribute("funcionario", new Funcionario());
-        model.addAttribute("edicao", false);
+    public String telaCadastrarFuncionario(Funcionario funcionario) {
         return "/funcionario/cadastro";
     }
 
-    @RequestMapping(value = "/cadastrarFuncionario", params = { "cadastrar" })
+    @GetMapping("/editar/{id}")
+    public String telaEditarFuncionario(@PathVariable("id") Long id, Model model) {
+        Funcionario funcionarioBanco = serviceFuncionario.buscaPorId(id).get();
+        model.addAttribute("funcionario", funcionarioBanco);
+        model.addAttribute("cargos", funcionarioBanco.getCargo());
+        return "/funcionario/cadastro";
+    }
+
+    @PostMapping("/salvar")
     public String cadastrarFuncionario(@Valid Funcionario funcionario, BindingResult result, RedirectAttributes attr) {
         if(result.hasErrors()) {
             return "/funcionario/cadastro";
@@ -53,24 +60,15 @@ public class FuncionarioController {
         serviceFuncionario.cadastrar(funcionario);
         attr.addFlashAttribute("success", "Registro inserido com sucesso.");
         return "redirect:/funcionarios/cadastrar";
-    }
+    }    
 
-     @GetMapping("/editar/{id}")
-    public String telaEditarFuncionario(@PathVariable("id") Long id, Model model) {
-        Funcionario funcionarioBanco = serviceFuncionario.buscaPorId(id).get();
-        model.addAttribute("funcionario", funcionarioBanco);
-        model.addAttribute("cargos", funcionarioBanco.getCargo());
-        model.addAttribute("edicao", true);
-        return "/funcionario/cadastro";
-    }
-
-    @RequestMapping(value = "/cadastrarFuncionario", params = { "atualizar" })
+    @PostMapping("/editar")
     public String editar(@Valid Funcionario funcionario, BindingResult result, RedirectAttributes attr) {
         if(result.hasErrors()) {
             return "/funcionario/cadastro";
         }
         serviceFuncionario.alterar(funcionario.getId(), funcionario);
-        attr.addFlashAttribute("success", "Registro salvo com sucesso.");
+        attr.addFlashAttribute("success", "Registro atualizado com sucesso.");
         return "redirect:/funcionarios/cadastrar";
     }
 

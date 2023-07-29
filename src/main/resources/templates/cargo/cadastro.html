@@ -17,24 +17,28 @@
 		</div>
 
 		<div class="container" id="cadastro">
-			<div th:replace="~{fragments/alert}"></div>
+			<div th:replace="fragments/alert"></div>
 			<form class="row g-3" 
-				  th:action="@{/cargos/cadastrarCargo}" th:object="${cargo}" method="POST">	
+				  th:action="${cargo.id == null} ? @{/cargos/salvar} : @{/cargos/editar}" 
+				  th:object="${cargo}" method="POST">	
 				  <div th:replace="~{fragments/validacao :: validacao}"></div>			
 				<div class="col-6">
-					<input type="text" class="form-control" id="nome" placeholder="Novo Cargo" autofocus="autofocus" th:field="*{nome}" />
+					<label for="nome">Cargo</label>
+					<input type="text" class="form-control" id="nome" placeholder="Informe o nome do cargo" autofocus="autofocus" th:field="*{nome}"
+					       th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'">
+						   <span class="fv-help-block" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
 				</div>
 				<div class="col-5">
-					<select id="departamento" class="form-control" name="departamento">
-						<option value="">Selecione</option>
+					<label for="departamento">Departamento</label>
+					<select id="departamento" class="form-control" name="departamento" >
+						<option value="">Selecione um departamento</option>
 						<option th:each="d : ${departamentos}" th:if="${cargo.departamento} != null" th:selected="${d.id == cargo.departamento.id}" th:value="${d.id}" th:text="${d.nome}">bla</option>
 						<option th:each="d : ${departamentos}" th:if="${cargo.departamento} == null" th:value="${d.id}" th:text="${d.nome}">bla</option>
 					</select>
 				</div>
 				<div class="col-auto">
-					<input type="hidden" id="id" th:field="*{id}" />
-					<button th:if="${edicao == true}" type="submit" name="atualizar" class="btn btn-success mb-3">Salvar Modificações</button>
-					<button th:if="${edicao == false}" type="submit" name="cadastrar" class="btn btn-success mb-3">Salvar</button>
+					<input type="hidden" id="id" th:field="*{id}" />					
+					<button type="submit" class="btn btn-success mb-3 mt-4">Salvar</button>
 				</div>
 			</form>
 		</div>

@@ -18,17 +18,18 @@
 
 		<div class="container" id="cadastro">
 			<div th:replace="fragments/alert"></div>
-			<form class="row g-3 justify-content-md-center" action="#"
-				  th:action="@{/departamentos/cadastrarDepartamento}" 
+			<form class="row g-3 justify-content-md-center" 
+				  th:action="${departamento.id == null} ? @{/departamentos/salvar} : @{/departamentos/editar}" 
 				  th:object="${departamento}" method="POST">
-				<div th:replace="~{fragments/validacao :: validacao}"></div>
 				<div class="col-4">
-				  <input type="text" class="form-control" id="nome" name="aviso" placeholder="Novo departamento" th:field="*{nome}">
+					<label for="nome"><strong>Departamento</strong></label>
+				    <input type="text" class="form-control" id="nome" placeholder="Informe o nome do departamento" th:field="*{nome}"
+						   th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'">
+						   <span class="fv-help-block" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
 				</div>
 				<div class="col-md-7 offset-md-3">
 					<input type="hidden" id="id" th:field="*{id}"/>
-					<button th:if="${edicao == true}" type="submit" name="atualizar" class="btn btn-success mb-3">Salvar Modificações</button>
-					<button th:if="${edicao == false}" type="submit" name="cadastrar" class="btn btn-success mb-3">Salvar</button>
+					<button  type="submit" class="btn btn-success mb-3">Salvar</button>
 				</div>
 			</form>
 		</div>

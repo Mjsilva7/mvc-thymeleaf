@@ -29,7 +29,7 @@
 							<td th:text="${d.id}">4</td>
 							<td th:text="${d.nome}">Tecnologia da Informação</td>
 							<td colspan="2">
-								<a class="btn btn-info btn-sm" th:href="@{/departamentos/editar/{id} (id=${d.id}) }" role="button">
+								<a class="btn btn-info btn-sm" th:href="@{/departamentos/editar/{id}(id=${d.id}) }" role="button">
 									<i class="bi bi-pencil-square"></i>
 								</a>
 								<button th:id="${ 'btn_departamentos/excluir/' + d.id}" type="button" class="btn btn-danger btn-sm" 

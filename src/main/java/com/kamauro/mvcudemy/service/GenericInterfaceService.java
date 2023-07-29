@@ -14,7 +14,7 @@ public interface GenericInterfaceService<T, K> {
 
 	public void deletar(K id);
 
-	public Optional<T> buscaPorId(K id);
+	public Optional<T> buscaPorId(K id);	
 
 	public List<T> listarTodos();
 	

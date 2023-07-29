@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.kamauro.mvcudemy.model.Departamento;
 import com.kamauro.mvcudemy.repository.DepartamentoRepository;
+
+import org.springframework.transaction.annotation.Transactional;
 @Service
+@Transactional
 public class DepartamentoService implements GenericInterfaceService<Departamento, Long>{
 
     @Autowired
@@ -20,9 +23,7 @@ public class DepartamentoService implements GenericInterfaceService<Departamento
 
     @Override
     public Departamento cadastrar(Departamento departamento) {
-        if(departamento.getNome() == null) {
-            throw new EmptyResultDataAccessException(1);
-        }
+        
         return repositorio.saveAndFlush(departamento);
     }
 
@@ -47,6 +48,11 @@ public class DepartamentoService implements GenericInterfaceService<Departamento
         return (Optional<Departamento>) repositorio.findById(id);
     }
 
+    @Transactional(readOnly = true)
+    public Departamento buscarPorId(Long id) {
+        return repositorio.findById(id).get();
+    }
+
     @Override
     public List<Departamento> listarTodos() {
        return repositorio.findAll();
@@ -63,21 +69,5 @@ public class DepartamentoService implements GenericInterfaceService<Departamento
             return false;
         }
         return true;
-    }
-
-    
-    
-
-    // void salvar(Departamento departamento);
-
-    // void editar(Departamento departamento);
-
-    // void excluir(Long id);
-
-    // Departamento buscarPorId(Long id);
-
-    // List<Departamento> buscarTodos();
-
-    // boolean departamentoTemCargos(Long id);
-    
+    }    
 }

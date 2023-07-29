@@ -12,9 +12,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-// import jakarta.validation.constraints.NotBlank;
-// import jakarta.validation.constraints.NotNull;
-// import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 @Data
 @Entity
@@ -25,12 +25,12 @@ public class Cargo implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    // @NotBlank(message = "Informe um nome.")
-    // @Size(max = 60, message = "O departamento deve conter nmáximo 60 caracteres.")
-    @Column(nullable = false, unique = true, length = 60)
+    @NotBlank
+    @Size(min = 3 , max = 30, message = "O cargo deve conter entre {min} e {max} de caracteres.")
+    @Column(nullable = false, unique = true, length = 30)
     private String nome;
 
-    // @NotNull(message = "Selecione o departamento relativo ao cargo.")
+    @NotNull(message = "Selecione o departamento referente ao cargo.")
     @ManyToOne
     @JoinColumn(name = "id_departamento_fk")
     private Departamento departamento;

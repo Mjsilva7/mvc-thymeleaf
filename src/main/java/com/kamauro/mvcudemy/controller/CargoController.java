@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,13 +37,19 @@ public class CargoController {
 	}
 
     @GetMapping("/cadastrar")
-	public String telaCadastrarCargo(Model model) {
-		model.addAttribute("cargo", new Cargo());
-		model.addAttribute("edicao", false);
+	public String telaCadastrarCargo(Cargo cargo) {
 		return "/cargo/cadastro";
 	}	
+
+	@GetMapping("/editar/{id}")
+	public String telaEditarCargo(@PathVariable("id") Long id, Model model) {
+		Cargo cargoBanco = serviceCargo.buscaPorId(id).get();
+		model.addAttribute("departamento", cargoBanco.getDepartamento().getNome());
+		model.addAttribute("cargo", cargoBanco);
+		return "/cargo/cadastro";
+	}
 	
-	@RequestMapping(value = "/cadastrarCargo", params = { "cadastrar" })
+	@PostMapping("/salvar")
 	public String cadastrarCargo(@Valid Cargo cargo, BindingResult result, RedirectAttributes attr) {
 		if(result.hasErrors()) {
 			return "/cargo/cadastro";
@@ -52,17 +59,8 @@ public class CargoController {
 		attr.addFlashAttribute("success", "Registro inserido com sucesso.");
 		return "redirect:/cargos/cadastrar";
 	}
-	
-	@GetMapping("/editar/{id}")
-	public String telaEditarCargo(@PathVariable("id") Long id, Model model) {
-		Cargo cargoBanco = serviceCargo.buscaPorId(id).get();
-		model.addAttribute("departamento", cargoBanco.getDepartamento());
-		model.addAttribute("cargo", cargoBanco);
-		model.addAttribute("edicao", true);
-		return "cargo/cadastro";
-	}
-	
-	@RequestMapping(value = "/cadastrarCargo", params = { "atualizar" })
+		
+	@PostMapping("/editar")
 	public String editar(@Valid Cargo cargo, BindingResult result, RedirectAttributes attr) {
 		if(result.hasErrors()) {
 			return "/cargo/cadastro";
